@@ -1,0 +1,121 @@
+Unreal c++을 위해선 .net Framework 다운받아야 사용가능
+
+데스크톱 개발 : winapi
+게임 개발 : UnrealEngine들 호환
+
+unreal engine 4.27버전 이후 Visual Studio Integration Tool 엔진에 깔아야 c++이 사용가능함
+UE5에 plugIn- liveLinkXR을 설치후 - visual studio integration tools 다운\
+visual이 안먹힐경우 binaries와 intermediate를 지우고 재시작(빌드와중에 안바뀌는게 문제일수도)
+
+※Github올릴경우
+ - binaries(UE버전),Config(환경설정),Content(UE폴더),Source,UE Project
+Ctrl+Alt+F11누르고 다시 컴파일(ue5와 연동중에 무언가 꼬임) - UE5와 라이브 코딩 재실행
+
+------------------------------------------
+1. 언리얼을 닫습니다
+. 2. 비주얼 스튜디오를
+닫습니다. 3. 프로젝트 파일 → 바이너리 → win64로 이동합니다. → 그 안의 파일을 삭제합니다
+. 4. 비주얼 스튜디오를 실행합니다.
+5. 오른쪽에서 → 게임 파일을 클릭합니다. → 프로젝트 이름을 마우스 오른쪽 버튼으로 클릭합니다. → 다시 빌드합니다.
+6. 그런 다음 이런 방식으로 빌드합니다.
+위의 두 섹션에서 성공했다면
+7. ctrl+F5를 눌러 언리얼을 실행합니다.
+
+버전 - generate(visual 연결) - 실행
+
+1. 기본 설정
+DirectionLight Actor-> 기본 노을지게(화면을 밝게해줌), 100 -200 570 / -51 -31 36, 위치는 문제없음 하지만 회전은 값을 줘야 그림자가 진다, AtmosphereSubLight에서 노을과 낮으로 바꿀수있음
+DirectionLight에  sky sphere을 적용시켜 화면을 밝게 바꿔줌
+sky sphere-> 낮인 느낌으로 바꿔줌
+Sky Light 그림자 부분을 완전 검은색이아니라 라이트로 비춰져서 투명도가 약하게해서 보이게해줌 , 위치는 중요치않음
+sky_sphere - CloudSpeed로 구름의 속도를 올릴수있음, CloudSpeed:10
+Unreal 에서 제공하는 Bp를 사용하기 위해선 콘텐츠 브라우저 세팅-엔진콘텐츠 선택
+PlayerStart Actor로 내 스타트 지점 설정 0 0 112
+Sky Atmosphere로 반사되는 물리 엔진을 건드림, Rayleigh Scattering Scale로 비취는 농도값고 색깔도 바꿀수있음(뿌연정도를 정할수있음)
+
+2. YBot 설정
+- mixao에서 ybot fxp로 받고
+- convert Scene Unit : 씬을 FBX측정 유닉에서 UE5측정 유닛인 센티미터로 변환
+- animation을 받아오면 그형태와 맞는 skel을 선택
+- ue4와 ue5는 리타겟팅(인간형) 하는법이 다르다.
+- ue5부터는 애니메이션-ik 릭, ik 리타게팅을 생성에서 맞춰줘야한다.
+ - 릭 : 부위별로 묶기
+ - 리타게팅 : 다른 캐릭터에 내가 묶어놓은 릭을 활용해 편하게 뼈대를 바꿀수있음
+- 맞출뼈대를 체인으로 묶어서 관리
+- 체인을 서로 맞추면서 리타겟팅을 한다.
+ex) https://www.youtube.com/watch?v=wO3LJet6pIc
+
+3. 이벤트 디스패쳐
+- 호출하면 현재 이벤트 목록에 바인딩된 이벤트를 전부 실행합니다.
+- 이벤트 디스패쳐의 장점은 레벨별로 다른 방식으로 해결해줘야 하는 경우 레벨 이벤트 그래프에서 각각 다르게 처리하면 된다는 점 입니다.
+
+https://devjino.tistory.com/276
+https://www.youtube.com/watch?v=h3Q3gBS-QL0
+
+- Move c++
+https://www.youtube.com/watch?v=xZjZimU31wc
+맵&모드에서 기본게임모드를 내가 만든 bp_GameBase로 만들어 C가 아닌 내가 만든것으로 해줘야 스폰되었을때 잘보임
+
+- blendspace에선 ctrl을 누른상태에서만 볼수있음
+
+- 카메라 회전억제
+https://www.youtube.com/watch?v=hsBzIQfYZw0
+
+- 단축키
+https://pepepien.tistory.com/359
+1. 1 + LButton : float 변수
+2. D + LButton : delay함수
+3. Alt + LButton : 줄 끊기
+4. ctrl + space : 컨텐츠 브라우저
+
+- Round ProgressBar 만들기
+https://www.youtube.com/watch?v=BgOAbAdi8f0
+- Round ProgressBar color 만들기
+https://www.youtube.com/watch?v=Xtk3v3-fFcI
+
+- 원형판에 무기선택
+https://www.youtube.com/watch?v=rUDbxp8S2eg
+
+- Enhanced Input
+https://coding-hell.tistory.com/128
+
+- Enhanced Input란
+ue5에만 잇는 시스템(향상된 입력 시스템)
+
+1. 트리거 : 나의 현상태(Pressed/Released)
+2. 모디파이 : Negate(Bool), 
+
+트리거 : 키를 눌렀을때, 땔떄 둘다 반응, 즉 트리거에 넣어둔걸 실행할때마다 실행됨
+Start : 키를 눌렀을 떄만 실행, 트리거에 넣은것중 첫번째껏만 실행
+Complate : 키를 땠을 떄만 실행, 트리거에 넣은것중 마지막껏만 실행
+
+-  Enhanced Input입력
+1. 사용자입력
+2. 입력 매핑 컨텍스트(유저의 input과 데이터를 매핑), 입력 매핑 컨텍스트 안에 여러가지의 액션이 들어가있음
+3. 액션(입력값 변조 --> 이벤트 활성화(trrigger)
+4. 게임 로직(함수)
+
+
+- 기본 입력(input)방식
+1. 유저가 하드웨어(키보드)를 동작
+2. 유저의 input과 데이터를 매핑
+
+3. input component가 제일먼저 input처리가 가능한 액터를 확인
+4. playercontroller확인
+5. 레벨 블루프린터 확인
+6. 플레이어가 빙의한 pawn 확인
+
+7. 3~6과정을 통해 처리된 input을 게임 로직에 반영
+
+- 입력 과정 크게
+1. input 처리가 가능한 actor
+2. playerController
+3. Level BluePrint
+4. Player가 빙의한 pawn
+
+- playerController보단 pawn에 입력 처리가는것이 옳다
+
+- CustEvent : 반환값이 필요없으며, 지연시간이 존재하는 경우
+- Function : 반환값이 필요하며, 지역변수로 활용하고 싶은 경우
+
+
