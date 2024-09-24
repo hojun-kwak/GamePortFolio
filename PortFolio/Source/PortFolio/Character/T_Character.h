@@ -30,6 +30,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	// FVector2D
+	void MoveForward(float InputValue);
+	void MoveRight(float InputValue);
+
+	void Turn(float InputValue);
+	void LookUp(float InputValue);
+
+	void CheckJump();
+
 protected:
 	// 프로퍼티가 언리얼 엔진 및 에디터에 이러한 프로퍼티가 있음을 알리고, 프로퍼티가 엔진과 연결되었을 때 어떻게 작동할지를 지정하기 위한 것
 
@@ -39,10 +49,7 @@ protected:
 	UPROPERTY(EditAnyWhere) // ue의 권한 부여
 	class UCameraComponent* _camera;
 
-	// FVector2D
-	void MoveForward(float InputValue);
-	void MoveRight(float InputValue);
+	UPROPERTY()
+	bool _jumping;
 
-	void Turn(float InputValue);
-	void LookUp(float InputValue);
 };

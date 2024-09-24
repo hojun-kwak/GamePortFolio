@@ -15,6 +15,9 @@ class PORTFOLIO_API UT_AnimInstance : public UAnimInstance
 
 public:
 	virtual void NativeInitializeAnimation() override;
+
+	// c++코드를 blueprint 소환가능
+	UFUNCTION(BlueprintCallable)
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
 
 public:

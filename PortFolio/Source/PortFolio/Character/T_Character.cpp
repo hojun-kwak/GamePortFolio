@@ -14,13 +14,20 @@ AT_Character::AT_Character()
 
 	_springArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	_springArm->SetupAttachment(RootComponent);
-	_springArm->TargetArmLength = 180.0f;
-	_springArm->bUsePawnControlRotation = true;
+	_springArm->TargetArmLength = 280.0f;
+	_springArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	_springArm->bUsePawnControlRotation = true; // 카메라 회전설정
+	_springArm->bEnableCameraLag = true;
+	_springArm->CameraLagSpeed = 2;
+	_springArm->CameraLagMaxDistance = 1.5f;
+	_springArm->bEnableCameraRotationLag = true;
 
 	// 카메라 생성
 	_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	_camera->SetupAttachment(_springArm, USpringArmComponent::SocketName);
 	_camera->bUsePawnControlRotation = true; // 폰제어 회전
+
+	_jumping = false;
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +42,8 @@ void AT_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (_jumping) Jump();
+
 }
 
 // Called to bind functionality to input
@@ -46,7 +55,9 @@ void AT_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	// IE_Pressed - 눌렀을때
 	// IE_Released - 땟을떄
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AT_Character::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AT_Character::CheckJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AT_Character::CheckJump);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &AT_Character::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AT_Character::MoveRight);
 
@@ -74,5 +85,13 @@ void AT_Character::Turn(float InputValue)
 void AT_Character::LookUp(float InputValue)
 {
 	AddControllerPitchInput(InputValue);
+}
+
+void AT_Character::CheckJump()
+{
+	if (_jumping)
+		_jumping = false;
+	else
+		_jumping = true;
 }
 
