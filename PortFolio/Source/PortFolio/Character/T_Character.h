@@ -6,6 +6,10 @@
 #include "GameFramework/Character.h"
 #include "T_Character.generated.h"
 
+// springArm, camera 전방선언
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class PORTFOLIO_API AT_Character : public ACharacter
 {
@@ -28,6 +32,9 @@ public:
 
 protected:
 	// 프로퍼티가 언리얼 엔진 및 에디터에 이러한 프로퍼티가 있음을 알리고, 프로퍼티가 엔진과 연결되었을 때 어떻게 작동할지를 지정하기 위한 것
+
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* _springArm;
 
 	UPROPERTY(EditAnyWhere) // ue의 권한 부여
 	class UCameraComponent* _camera;

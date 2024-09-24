@@ -2,6 +2,8 @@
 
 
 #include "PortFolio/Character/T_Character.h"
+
+#include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
 // Sets default values
@@ -10,9 +12,14 @@ AT_Character::AT_Character()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	_springArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
+	_springArm->SetupAttachment(RootComponent);
+	_springArm->TargetArmLength = 180.0f;
+	_springArm->bUsePawnControlRotation = true;
+
 	// 카메라 생성
 	_camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
-	_camera->SetupAttachment(RootComponent);
+	_camera->SetupAttachment(_springArm, USpringArmComponent::SocketName);
 	_camera->bUsePawnControlRotation = true; // 폰제어 회전
 }
 
@@ -34,6 +41,9 @@ void AT_Character::Tick(float DeltaTime)
 void AT_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (!PlayerInputComponent) return;
+
 	// IE_Pressed - 눌렀을때
 	// IE_Released - 땟을떄
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AT_Character::Jump);
