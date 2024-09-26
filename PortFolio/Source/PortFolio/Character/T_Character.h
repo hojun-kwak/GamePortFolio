@@ -4,11 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+//#include "Interfaces/PickupInterface.h"
+#include "InputActionValue.h"
 #include "T_Character.generated.h"
 
 // springArm, camera 전방선언
 class USpringArmComponent;
 class UCameraComponent;
+
+// EnhancedInput 관련헤더파일
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class PORTFOLIO_API AT_Character : public ACharacter
@@ -29,16 +35,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Jump() override;
 
 private:
-	// FVector2D
-	void MoveForward(float InputValue);
-	void MoveRight(float InputValue);
-
-	void Turn(float InputValue);
-	void LookUp(float InputValue);
-
-	void CheckJump();
+	void Move(const FInputActionValue& value);
+	void Look(const FInputActionValue& value);
 
 protected:
 	// 프로퍼티가 언리얼 엔진 및 에디터에 이러한 프로퍼티가 있음을 알리고, 프로퍼티가 엔진과 연결되었을 때 어떻게 작동할지를 지정하기 위한 것
@@ -51,5 +52,14 @@ protected:
 
 	UPROPERTY()
 	bool _jumping;
+
+	UPROPERTY(EditAnywhere, Category = HInput)
+	UInputMappingContext* _mappingContext;
+	UPROPERTY(EditAnywhere, Category = HInput)
+	UInputAction* _movementAction;
+	UPROPERTY(EditAnywhere, Category = HInput)
+	UInputAction* _lookAction;
+	UPROPERTY(EditAnywhere, Category = HInput)
+	UInputAction* _jumpAction;
 
 };
