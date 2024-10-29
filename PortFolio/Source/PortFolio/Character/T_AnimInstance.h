@@ -22,10 +22,10 @@ public:
 
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = " true"))
-	float _speed; // 속도
+	float _bp_speed; // 속도
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = " true"))
-	bool _bIsInAir; // 공중여부
+	bool _bp_InAir; // 공중여부
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = " true"))
 	bool _bIsInputAccelerating; // 입력 가속도

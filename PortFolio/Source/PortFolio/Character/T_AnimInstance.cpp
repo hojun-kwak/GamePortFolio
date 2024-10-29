@@ -22,10 +22,10 @@ void UT_AnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	FVector velocity = _character->GetVelocity();
 	velocity.Z = 0.0f;
-	_speed = velocity.Size();
+	_bp_speed = velocity.Size();
 
 	// 공중여부
-	_bIsInAir = _character->GetCharacterMovement()->IsFalling();
+	_bp_InAir = _character->GetCharacterMovement()->IsFalling();
 	// 키를 눌렀을떄 true면 가속도를 가져옴
 	_bIsInputAccelerating = _character->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.0f ? true : false;
 }

@@ -53,9 +53,6 @@ void AT_Character::BeginPlay()
 void AT_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (_jumping) Jump();
-
 }
 
 // Called to bind functionality to input
@@ -102,12 +99,17 @@ void AT_Character::Look(const FInputActionValue& value)
 {
 	const FVector2D lookAxisVector = value.Get<FVector2D>();
 
-	AddControllerPitchInput(lookAxisVector.Y);
 	AddControllerYawInput(lookAxisVector.X);
+	AddControllerPitchInput(lookAxisVector.Y);
+
+	// À§ ²¨¶û µ¿ÀÏ
+	//AddControllerYawInput(value.Get<FVector2D>().X);
+	//AddControllerPitchInput(value.Get<FVector2D>().Y);
 }
 
 void AT_Character::Jump()
 {
 	Super::Jump();
+
 }
 

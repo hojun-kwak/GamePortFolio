@@ -54,12 +54,12 @@ protected:
 	bool _jumping;
 
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputMappingContext* _mappingContext;
+	UInputMappingContext* _mappingContext; // 입력매핑 컨택스트
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _movementAction;
+	UInputAction* _movementAction; // IA_Move
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _lookAction;
+	UInputAction* _lookAction; // IA_Look
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _jumpAction;
+	UInputAction* _jumpAction; // IA_Jump
 
 };
