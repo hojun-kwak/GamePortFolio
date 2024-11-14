@@ -36,30 +36,36 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
+	virtual void StopJumping() override;
 
 private:
 	void Move(const FInputActionValue& value);
 	void Look(const FInputActionValue& value);
+	void Walk();
+	void Walking();
 
 protected:
 	// 프로퍼티가 언리얼 엔진 및 에디터에 이러한 프로퍼티가 있음을 알리고, 프로퍼티가 엔진과 연결되었을 때 어떻게 작동할지를 지정하기 위한 것
 
+	// Camera
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* _springArm;
 
 	UPROPERTY(EditAnyWhere) // ue의 권한 부여
 	class UCameraComponent* _camera;
 
-	UPROPERTY()
-	bool _jumping;
-
+	// Input Mapping
 	UPROPERTY(EditAnywhere, Category = HInput)
 	UInputMappingContext* _mappingContext; // 입력매핑 컨택스트
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _movementAction; // IA_Move
+	UInputAction* _movementAction;			// IA_Move
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _lookAction; // IA_Look
+	UInputAction* _lookAction;				// IA_Look
 	UPROPERTY(EditAnywhere, Category = HInput)
-	UInputAction* _jumpAction; // IA_Jump
+	UInputAction* _jumpAction;				// IA_Jump
+	UPROPERTY(EditAnywhere, Category = "HInput")
+	UInputAction* _walkAction;				// IA_Walk
 
+private:
+	APlayerController* playerController;
 };

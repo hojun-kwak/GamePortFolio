@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -31,7 +32,9 @@ AT_Character::AT_Character()
 	_camera->SetupAttachment(_springArm, USpringArmComponent::SocketName);
 	_camera->bUsePawnControlRotation = true; // 폰제어 회전
 
-	_jumping = false;
+	// 점프
+	GetCharacterMovement()->JumpZVelocity = 500.0f;
+	JumpMaxCount = 1;
 }
 
 // Called when the game starts or when spawned
@@ -39,20 +42,21 @@ void AT_Character::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (APlayerController* playerController = Cast<APlayerController>(Controller))
+	playerController = Cast<APlayerController>(Controller);
+
+	if (playerController)
 	{
-		
 		UEnhancedInputLocalPlayerSubsystem* subSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(playerController->GetLocalPlayer());
 		if (subSystem)
 			subSystem->AddMappingContext(_mappingContext, 0);
 	}
-
 }
 
 // Called every frame
 void AT_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 // Called to bind functionality to input
@@ -67,7 +71,12 @@ void AT_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		enhancedInputComponent->BindAction(_movementAction, ETriggerEvent::Triggered, this, &AT_Character::Move);
 		enhancedInputComponent->BindAction(_lookAction, ETriggerEvent::Triggered, this, &AT_Character::Look);
 		enhancedInputComponent->BindAction(_jumpAction, ETriggerEvent::Triggered, this, &AT_Character::Jump);
+		enhancedInputComponent->BindAction(_jumpAction, ETriggerEvent::Completed, this, &AT_Character::StopJumping);
+		enhancedInputComponent->BindAction(_walkAction, ETriggerEvent::Triggered, this, &AT_Character::Walk);
+		enhancedInputComponent->BindAction(_walkAction, ETriggerEvent::Completed, this, &AT_Character::Walking);
 	}
+
+	
 
 	// IE_Pressed - 눌렀을때
 	// IE_Released - 땟을떄
@@ -107,9 +116,29 @@ void AT_Character::Look(const FInputActionValue& value)
 	//AddControllerPitchInput(value.Get<FVector2D>().Y);
 }
 
+void AT_Character::Walk()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 350.0f;
+}
+
+void AT_Character::Walking()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+}
+
 void AT_Character::Jump()
 {
 	Super::Jump();
 
+	// 싱글모드일떄는 가능 player의 첫번째 즉 자기자신만 사용가능
+	//APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	//if (playerController->WasInputKeyJustPressed(EKeys::AnyKey))
+	//	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, TEXT("Jump"));
+
+}
+
+void AT_Character::StopJumping()
+{
+	Super::StopJumping();
 }
 
